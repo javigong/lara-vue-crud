@@ -75,9 +75,9 @@ This application follows Laravel's MVC (Model-View-Controller) pattern enhanced 
 ┌─────────────────────────────────────────────────────────────┐
 │                    FRONTEND (Vue.js)                        │
 ├─────────────────────────────────────────────────────────────┤
-│  User (Alex)  →  URL (/products)  →  Vue Components        │
-│                     ↓                                      │
-│  Vue 3 + TypeScript + Tailwind CSS + Shadcn/ui            │
+│  User (Alex)  →  URL (/products)  →  Vue Components         │
+│                     ↓                                       │
+│  Vue 3 + TypeScript + Tailwind CSS + Shadcn/ui              │
 └─────────────────────┬───────────────────────────────────────┘
                       │
                       │ Inertia.js Bridge
@@ -86,10 +86,10 @@ This application follows Laravel's MVC (Model-View-Controller) pattern enhanced 
 │                    BACKEND (Laravel)                        │
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
-│  Routes  →  Controller  →  Model  →  Database              │
-│    ↓           ↓           ↓          ↓                    │
-│  URL         Business    Eloquent   SQLite/MySQL           │
-│  Mapping     Logic       ORM        Storage                │
+│  Routes  →  Controller  →  Model  →  Database               │
+│    ↓           ↓           ↓          ↓                     │
+│  URL         Business    Eloquent   SQLite/MySQL            │
+│  Mapping     Logic       ORM        Storage                 │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -128,7 +128,7 @@ This application follows Laravel's MVC (Model-View-Controller) pattern enhanced 
      │              │                │                │
      │              │                │                ▼
      │              │                │          ┌─────────────┐
-     │              │                │          │ Vue Component│
+     │              │                │          │Vue Component│
      │              │                │          │ (Updated)   │
      │              │                │          └─────────────┘
      │              │                │                │
@@ -189,7 +189,7 @@ Let's trace a complete request through the MVC architecture:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                         PRODUCT CREATION FLOW                              │
+│                         PRODUCT CREATION FLOW                               │
 └─────────────────────────────────────────────────────────────────────────────┘
 
 1. User clicks "Create Product" button in Vue component
