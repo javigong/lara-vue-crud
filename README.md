@@ -99,7 +99,7 @@ This application follows Laravel's MVC (Model-View-Controller) pattern enhanced 
 ```
 ┌─────────┐    ┌─────────┐    ┌─────────────┐    ┌─────────────┐
 │  User   │───▶│  Route  │───▶│ Controller  │───▶│   Model     │
-│ (Javier)│    │         │    │             │    │             │
+│         │    │         │    │             │    │             │
 └─────────┘    └─────────┘    └─────────────┘    └─────────────┘
      ▲              │                │                │
      │              │                │                ▼
