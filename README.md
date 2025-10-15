@@ -75,9 +75,9 @@ This application follows Laravel's MVC (Model-View-Controller) pattern enhanced 
 ┌─────────────────────────────────────────────────────────────┐
 │                    FRONTEND (Vue.js)                        │
 ├─────────────────────────────────────────────────────────────┤
-│  User (Javier) →  URL (/products)  →  Vue Components        │
-│                     ↓                                      │
-│  Vue 3 + TypeScript + Tailwind CSS + Shadcn/ui            │
+│         User  →  URL (/products)  →  Vue Components         │
+│                     ↓                                       │
+│        Vue 3 + TypeScript + Tailwind CSS + Shadcn/ui        │
 └─────────────────────┬───────────────────────────────────────┘
                       │
                       │ Inertia.js Bridge
