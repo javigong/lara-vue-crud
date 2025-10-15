@@ -508,13 +508,61 @@ lara-vue-crud/
 - [Inertia.js Documentation](https://inertiajs.com/)
 - [Tailwind CSS Docs](https://tailwindcss.com/docs)
 
+## 📦 Git Repository Setup
+
+This project is now initialized as a Git repository with a comprehensive commit history.
+
+### Git Commands
+
+```bash
+# Check repository status
+git status
+
+# View commit history
+git log --oneline
+
+# Create a new branch for development
+git checkout -b feature/new-feature
+
+# Add changes to staging
+git add .
+
+# Commit changes with descriptive message
+git commit -m "Add new feature with tests"
+
+# Push to remote repository (when configured)
+git push origin main
+```
+
+### Repository Structure
+
+The repository includes:
+- **287 files** in the initial commit
+- **27,877 lines** of code
+- Complete Laravel application structure
+- Vue.js components and TypeScript files
+- Comprehensive test suite
+- Documentation and configuration files
+
+### .gitignore Configuration
+
+The repository includes a comprehensive `.gitignore` file that excludes:
+- Node modules and build artifacts
+- Environment files and secrets
+- Database files and logs
+- IDE and editor configurations
+- Cache and temporary files
+
 ## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
 3. Make your changes
 4. Add tests if applicable
-5. Submit a pull request
+5. Run the test suite: `composer run test`
+6. Commit your changes: `git commit -m "Add amazing feature"`
+7. Push to the branch: `git push origin feature/amazing-feature`
+8. Open a Pull Request
 
 ## 📄 License
 
