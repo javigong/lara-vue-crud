@@ -72,47 +72,67 @@ This application follows Laravel's MVC (Model-View-Controller) pattern enhanced 
 #### Architecture Overview
 
 ```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                           Laravel MVC + Vue Stack                           │
-└─────────────────────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────┐
+│                    FRONTEND (Vue.js)                        │
+├─────────────────────────────────────────────────────────────┤
+│  User (Alex)  →  URL (/products)  →  Vue Components        │
+│                     ↓                                      │
+│  Vue 3 + TypeScript + Tailwind CSS + Shadcn/ui            │
+└─────────────────────┬───────────────────────────────────────┘
+                      │
+                      │ Inertia.js Bridge
+                      │
+┌─────────────────────▼───────────────────────────────────────┐
+│                    BACKEND (Laravel)                        │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  Routes  →  Controller  →  Model  →  Database              │
+│    ↓           ↓           ↓          ↓                    │
+│  URL         Business    Eloquent   SQLite/MySQL           │
+│  Mapping     Logic       ORM        Storage                │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
 
-┌─────────────────┐    ┌─────────────────────────────────────────────────────┐
-│    FRONTEND     │    │                    BACKEND                           │
-│                 │    │                                                     │
-│  ┌───────────┐  │    │  ┌─────────┐  ┌─────────────┐  ┌─────────────────┐ │
-│  │   User    │  │    │  │ Routes  │  │ Controller  │  │     Model       │ │
-│  │   (Alex)  │  │    │  │         │  │             │  │                 │ │
-│  └─────┬─────┘  │    │  └────┬────┘  └──────┬──────┘  └────────┬────────┘ │
-│        │        │    │       │              │                  │         │
-│  ┌─────▼─────┐  │    │  ┌────▼────┐  ┌──────▼──────┐  ┌────────▼────────┐ │
-│  │    URL    │  │    │  │         │  │             │  │                 │ │
-│  │/products  │  │    │  │         │  │             │  │                 │ │
-│  └─────┬─────┘  │    │  │         │  │             │  │                 │ │
-│        │        │    │  │         │  │             │  │                 │ │
-│  ┌─────▼─────┐  │    │  │         │  │             │  │                 │ │
-│  │   View    │◄─┼────┼──┼─────────┼──┼─────────────┼──┼─────────────────┤ │
-│  │ (Vue.js)  │  │    │  │         │  │             │  │   Database      │ │
-│  │           │  │    │  │         │  │             │  │                 │ │
-│  │ Vue 3 +   │  │    │  │         │  │             │  │ SQLite/MySQL    │ │
-│  │Tailwind   │  │    │  │         │  │             │  │                 │ │
-│  │Shadcn/ui  │  │    │  │         │  │             │  │                 │ │
-│  └───────────┘  │    │  │         │  │             │  │                 │ │
-│                 │    │  │         │  │             │  │                 │ │
-└─────────────────┘    │  │         │  │             │  │                 │ │
-                       │  │         │  │             │  │                 │ │
-                       │  │         │  │             │  │                 │ │
-                       │  │         │  │             │  │                 │ │
-                       │  │         │  │             │  │                 │ │
-                       │  │         │  │             │  │                 │ │
-                       │  │         │  │             │  │                 │ │
-                       │  └─────────┘  └─────────────┘  └─────────────────┘ │
-                       │                                                     │
-                       └─────────────────────────────────────────────────────┘
+#### Request Flow Diagram
 
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                              INERTIA.JS BRIDGE                              │
-│                    (Connects Controller ↔ Vue Components)                    │
-└─────────────────────────────────────────────────────────────────────────────┘
+```
+┌─────────┐    ┌─────────┐    ┌─────────────┐    ┌─────────────┐
+│  User   │───▶│  Route  │───▶│ Controller  │───▶│   Model     │
+│ (Alex)  │    │         │    │             │    │             │
+└─────────┘    └─────────┘    └─────────────┘    └─────────────┘
+     ▲              │                │                │
+     │              │                │                ▼
+     │              │                │          ┌─────────────┐
+     │              │                │          │  Database   │
+     │              │                │          │             │
+     │              │                │          └─────────────┘
+     │              │                │                │
+     │              │                │                ▼
+     │              │                │          ┌─────────────┐
+     │              │                │          │   Model     │
+     │              │                │          │ (Response)  │
+     │              │                │          └─────────────┘
+     │              │                │                │
+     │              │                │                ▼
+     │              │                │          ┌─────────────┐
+     │              │                │          │ Controller  │
+     │              │                │          │ (Response)  │
+     │              │                │          └─────────────┘
+     │              │                │                │
+     │              │                │                ▼
+     │              │                │          ┌─────────────┐
+     │              │                │          │   Inertia   │
+     │              │                │          │   Bridge    │
+     │              │                │          └─────────────┘
+     │              │                │                │
+     │              │                │                ▼
+     │              │                │          ┌─────────────┐
+     │              │                │          │ Vue Component│
+     │              │                │          │ (Updated)   │
+     │              │                │          └─────────────┘
+     │              │                │                │
+     └──────────────┴────────────────┴────────────────┘
 ```
 
 #### Request Flow
@@ -126,18 +146,21 @@ This application follows Laravel's MVC (Model-View-Controller) pattern enhanced 
 #### Component Breakdown
 
 **Frontend (Vue.js)**
+
 - **User Interface**: Vue.js components with TypeScript
 - **Styling**: Tailwind CSS + Shadcn/ui components
 - **State Management**: Inertia.js handles server state
 - **Routing**: Client-side navigation with Inertia
 
 **Backend (Laravel)**
+
 - **Routes**: Define URL endpoints and middleware
 - **Controllers**: Handle business logic and orchestration
 - **Models**: Eloquent ORM for database interactions
 - **Database**: Data persistence layer
 
 **Bridge (Inertia.js)**
+
 - **Server-Client Communication**: Seamless data passing
 - **Page Transitions**: SPA-like experience
 - **Form Handling**: Reactive form submissions
@@ -226,7 +249,7 @@ const form = useForm({
 });
 
 const handleSubmit = () => {
-    form.post(route('products.store'));  // 6. Inertia request
+    form.post(route('products.store')); // 6. Inertia request
 };
 </script>
 
