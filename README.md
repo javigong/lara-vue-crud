@@ -65,9 +65,85 @@ Visit `http://localhost:8000` to see the application.
 
 ## 🏗️ Project Architecture
 
-### MVC Pattern Implementation
+### Laravel MVC Architecture with Vue.js & Inertia.js
 
-This application follows Laravel's MVC (Model-View-Controller) pattern:
+This application follows Laravel's MVC (Model-View-Controller) pattern enhanced with Vue.js and Inertia.js for a modern full-stack experience.
+
+#### Architecture Overview
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                           Laravel MVC + Vue Stack                           │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────┐    ┌─────────────────────────────────────────────────────┐
+│    FRONTEND     │    │                    BACKEND                           │
+│                 │    │                                                     │
+│  ┌───────────┐  │    │  ┌─────────┐  ┌─────────────┐  ┌─────────────────┐ │
+│  │   User    │  │    │  │ Routes  │  │ Controller  │  │     Model       │ │
+│  │   (Alex)  │  │    │  │         │  │             │  │                 │ │
+│  └─────┬─────┘  │    │  └────┬────┘  └──────┬──────┘  └────────┬────────┘ │
+│        │        │    │       │              │                  │         │
+│  ┌─────▼─────┐  │    │  ┌────▼────┐  ┌──────▼──────┐  ┌────────▼────────┐ │
+│  │    URL    │  │    │  │         │  │             │  │                 │ │
+│  │/products  │  │    │  │         │  │             │  │                 │ │
+│  └─────┬─────┘  │    │  │         │  │             │  │                 │ │
+│        │        │    │  │         │  │             │  │                 │ │
+│  ┌─────▼─────┐  │    │  │         │  │             │  │                 │ │
+│  │   View    │◄─┼────┼──┼─────────┼──┼─────────────┼──┼─────────────────┤ │
+│  │ (Vue.js)  │  │    │  │         │  │             │  │   Database      │ │
+│  │           │  │    │  │         │  │             │  │                 │ │
+│  │ Vue 3 +   │  │    │  │         │  │             │  │ SQLite/MySQL    │ │
+│  │Tailwind   │  │    │  │         │  │             │  │                 │ │
+│  │Shadcn/ui  │  │    │  │         │  │             │  │                 │ │
+│  └───────────┘  │    │  │         │  │             │  │                 │ │
+│                 │    │  │         │  │             │  │                 │ │
+└─────────────────┘    │  │         │  │             │  │                 │ │
+                       │  │         │  │             │  │                 │ │
+                       │  │         │  │             │  │                 │ │
+                       │  │         │  │             │  │                 │ │
+                       │  │         │  │             │  │                 │ │
+                       │  │         │  │             │  │                 │ │
+                       │  │         │  │             │  │                 │ │
+                       │  └─────────┘  └─────────────┘  └─────────────────┘ │
+                       │                                                     │
+                       └─────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                              INERTIA.JS BRIDGE                              │
+│                    (Connects Controller ↔ Vue Components)                    │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+#### Request Flow
+
+```
+1. User Request → 2. Route → 3. Controller → 4. Model → 5. Database
+                                                         ↓
+6. Database → 7. Model → 8. Controller → 9. Inertia → 10. Vue Component → 11. User
+```
+
+#### Component Breakdown
+
+**Frontend (Vue.js)**
+- **User Interface**: Vue.js components with TypeScript
+- **Styling**: Tailwind CSS + Shadcn/ui components
+- **State Management**: Inertia.js handles server state
+- **Routing**: Client-side navigation with Inertia
+
+**Backend (Laravel)**
+- **Routes**: Define URL endpoints and middleware
+- **Controllers**: Handle business logic and orchestration
+- **Models**: Eloquent ORM for database interactions
+- **Database**: Data persistence layer
+
+**Bridge (Inertia.js)**
+- **Server-Client Communication**: Seamless data passing
+- **Page Transitions**: SPA-like experience
+- **Form Handling**: Reactive form submissions
+- **State Synchronization**: Real-time UI updates
+
+### File Structure Implementation
 
 ```
 ├── app/
@@ -82,6 +158,83 @@ This application follows Laravel's MVC (Model-View-Controller) pattern:
 │       └── Edit.vue         # Update
 └── routes/
     └── web.php              # Routes
+```
+
+#### Real-World Example: Product Creation Flow
+
+Let's trace a complete request through the MVC architecture:
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         PRODUCT CREATION FLOW                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+1. User clicks "Create Product" button in Vue component
+   ↓
+2. Form submission triggers Inertia POST request
+   ↓
+3. Laravel Route receives request: POST /products
+   ↓
+4. ProductController@store method handles request
+   ↓
+5. Controller validates data and calls Product model
+   ↓
+6. Model creates new record in database
+   ↓
+7. Controller redirects with success message
+   ↓
+8. Inertia passes data to Vue component
+   ↓
+9. Vue component updates UI with new product
+```
+
+**Code Flow Example:**
+
+```php
+// 1. Route (web.php)
+Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+
+// 2. Controller (ProductController.php)
+public function store(Request $request)
+{
+    $data = $request->validate([
+        'name' => 'required|string|max:255',
+        'price' => 'required|numeric|min:0',
+        'description' => 'nullable|string',
+    ]);
+
+    Product::create($data);  // 3. Model interaction
+    return redirect()->route('products.index')->with('message', 'Product added successfully');
+}
+
+// 4. Model (Product.php)
+class Product extends Model
+{
+    protected $fillable = ['name', 'price', 'description'];
+}
+```
+
+```vue
+<!-- 5. Vue Component (Create.vue) -->
+<script setup>
+import { useForm } from '@inertiajs/vue3';
+
+const form = useForm({
+    name: '',
+    price: '',
+    description: '',
+});
+
+const handleSubmit = () => {
+    form.post(route('products.store'));  // 6. Inertia request
+};
+</script>
+
+<template>
+    <form @submit.prevent="handleSubmit">
+        <!-- Form fields -->
+    </form>
+</template>
 ```
 
 ## 📚 CRUD Operations Explained
