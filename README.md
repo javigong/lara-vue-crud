@@ -75,7 +75,7 @@ This application follows Laravel's MVC (Model-View-Controller) pattern enhanced 
 ┌─────────────────────────────────────────────────────────────┐
 │                    FRONTEND (Vue.js)                        │
 ├─────────────────────────────────────────────────────────────┤
-│  User (Alex)  →  URL (/products)  →  Vue Components        │
+│  User (Javier) →  URL (/products)  →  Vue Components        │
 │                     ↓                                      │
 │  Vue 3 + TypeScript + Tailwind CSS + Shadcn/ui            │
 └─────────────────────┬───────────────────────────────────────┘
@@ -99,7 +99,7 @@ This application follows Laravel's MVC (Model-View-Controller) pattern enhanced 
 ```
 ┌─────────┐    ┌─────────┐    ┌─────────────┐    ┌─────────────┐
 │  User   │───▶│  Route  │───▶│ Controller  │───▶│   Model     │
-│ (Alex)  │    │         │    │             │    │             │
+│ (Javier)│    │         │    │             │    │             │
 └─────────┘    └─────────┘    └─────────────┘    └─────────────┘
      ▲              │                │                │
      │              │                │                ▼
